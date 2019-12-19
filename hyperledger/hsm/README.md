@@ -59,7 +59,24 @@ softhsm 다운로드 후 tar 파일 압축 해제 후 "./configure --disable-gos
 1. fabric-compose-ca.yaml에서 volume 설정을 다시 잡아준다.
 2. 경로 /etc/hyperledger/fabric-ca-server/ 에 있는 msp 관련 파일을 전부 삭제 후 재실행
 ```
+## fabric-orderer
+```
+<action>
+softhsm2-utils 를 사용하여 token init을 받고 tokens 폴더를 volume 마운트 하지 않고 복사한 폴더를 volume 마운트하여 커맨드 실행
+docker-compose -f docker-compose.orderer.yaml up -d
 
+<error>
+DEBU 0ee Private key not found [Key not found [00000000  f3 c9 34 ec 4c 4c db 00  26 b8 dc 33 d5 9a 53 55  |..4.LL..&..3..SU|
+00000010  11 12 af 85 6f 69 82 f6  1f f9 93 06 6f ea 3f 78  |....oi......o.?x|
+]] for SKI [f3c934ec4c4cdb0026b8dc33d59a53551112af856f6982f61ff993066fea3f78], looking for Public key
+DEBU 0ef Could not find SKI [f3c934ec4c4cdb0026b8dc33d59a53551112af856f6982f61ff993066fea3f78], trying KeyMaterial field: Key with SKI f3c934ec4c4cdb0026b8dc33d59a53551112af856f6982f61ff993066fea3f78 not found in msp/keystore
+
+<cause>
+root 하위에 존재한 tokens 폴더를 복사하여 사용하였기 때문에 권한 에러 발생하여 docker container에서 접근이 불가하여 해당 에러 발생.
+
+<Solution>
+softhsm.conf 파일을 새로 생성하여 환경설정에서 생성한 config 파일을 바라보게 한 후 해당 파일에서 user 하위 tokens 폴더로 경로를 지정하여 지정한 tokens 폴더를 volume 마운트한다.
+```
 ## chaincode install
 ```
 <action>
