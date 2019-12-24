@@ -59,6 +59,20 @@ softhsm 다운로드 후 tar 파일 압축 해제 후 "./configure --disable-gos
 1. fabric-compose-ca.yaml에서 volume 설정을 다시 잡아준다.
 2. 경로 /etc/hyperledger/fabric-ca-server/ 에 있는 msp 관련 파일을 전부 삭제 후 재실행
 ```
+## tls 적용
+```
+<action>
+1. fabric-ca-client register ....
+
+<error>
+1. TLS handshake error from 172.17.0.1:40032: remote error: tls: bad certificate
+
+<cause>
+1. tls적용하였으나 호출하는 url에 http://... 보내고 있었음.
+
+<solution>
+1. http://.. -> https://... 로 수정
+```
 ## fabric-orderer
 ```
 <action>
