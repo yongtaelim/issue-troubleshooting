@@ -68,10 +68,15 @@ softhsm 다운로드 후 tar 파일 압축 해제 후 "./configure --disable-gos
 1. TLS handshake error from 172.17.0.1:40032: remote error: tls: bad certificate
 
 <cause>
-1. tls적용하였으나 호출하는 url에 http://... 보내고 있었음.
+1. tls 허용 url이 아니었음.
+  - tls적용하였으나 호출하는 url에 http://... 보내고 있었음.
+  - CN에 작성된 domain으로 호출하지 않고 있었음. 혹은 X509v3 extensions - Subject Alternative Name - DNS에 명시된 값으로 호출하지 않고 있었음.
 
 <solution>
-1. http://.. -> https://... 로 수정
+1. 수정
+  - http://.. -> https://... 로 수정
+  - DNS에 잘못된 값이 작성되있었음 ( orderer.example.com -> peer0.org1.example.com )
+
 ```
 ## fabric-orderer
 ```
